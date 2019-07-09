@@ -23,6 +23,7 @@ import java.util.concurrent.ExecutorService;
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class ClientCertificateAuthentication extends CordovaPlugin {
 
+    private static final String CRYPTO_RSA = "RSA";
     public static final String SP_KEY_ALIAS = "SP_KEY_ALIAS";
     public static final String TAG = "client-cert-auth";
 
@@ -53,7 +54,7 @@ public class ClientCertificateAuthentication extends CordovaPlugin {
 
         if (alias == null) {
             KeyChain.choosePrivateKeyAlias(
-                cordova.getActivity(), callback, new String[]{"RSA"}, null, request.getHost(), request.getPort(), null);
+                cordova.getActivity(), callback, new String[]{CRYPTO_RSA}, null, request.getHost(), request.getPort(), null);
         } else {
             ExecutorService threadPool = cordova.getThreadPool();
             threadPool.submit(new Runnable() {
