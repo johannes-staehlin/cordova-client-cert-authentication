@@ -23,7 +23,6 @@ import java.util.concurrent.ExecutorService;
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class ClientCertificateAuthentication extends CordovaPlugin {
 
-
     public static final String SP_KEY_ALIAS = "SP_KEY_ALIAS";
     public static final String TAG = "client-cert-auth";
 
@@ -68,7 +67,6 @@ public class ClientCertificateAuthentication extends CordovaPlugin {
 
 
     static class PrivateKeyAliasCallback implements KeyChainAliasCallback {
-
 
         private final SharedPreferences mPreferences;
         private final ICordovaClientCertRequest mRequest;
