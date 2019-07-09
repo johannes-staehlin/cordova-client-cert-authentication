@@ -48,7 +48,7 @@ public class ClientCertificateAuthentication extends CordovaPlugin {
 
     private void loadKeys(ICordovaClientCertRequest request) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(cordova.getActivity());
-        final KeyChainAliasCallback callback = new AliasCallback(cordova.getActivity(), request);
+        final KeyChainAliasCallback callback = new PrivateKeyAliasCallback(cordova.getActivity(), request);
         final String alias = sp.getString(SP_KEY_ALIAS, null);
 
         if (alias == null) {
@@ -66,14 +66,14 @@ public class ClientCertificateAuthentication extends CordovaPlugin {
     }
 
 
-    static class AliasCallback implements KeyChainAliasCallback {
+    static class PrivateKeyAliasCallback implements KeyChainAliasCallback {
 
 
         private final SharedPreferences mPreferences;
         private final ICordovaClientCertRequest mRequest;
         private final Context mContext;
 
-        public AliasCallback(Context context, ICordovaClientCertRequest request) {
+        public PrivateKeyAliasCallback(Context context, ICordovaClientCertRequest request) {
             mRequest = request;
             mContext = context;
             mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
