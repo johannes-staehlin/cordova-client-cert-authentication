@@ -19,7 +19,6 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.concurrent.ExecutorService;
 
-
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class ClientCertificateAuthentication extends CordovaPlugin {
 
@@ -30,7 +29,6 @@ public class ClientCertificateAuthentication extends CordovaPlugin {
     X509Certificate[] mCertificates;
     PrivateKey mPrivateKey;
     String mAlias;
-
 
     @Override
     public Boolean shouldAllowBridgeAccess(String url) {
@@ -65,7 +63,6 @@ public class ClientCertificateAuthentication extends CordovaPlugin {
             });
         }
     }
-
 
     static class PrivateKeyAliasCallback implements KeyChainAliasCallback {
 
@@ -103,7 +100,6 @@ public class ClientCertificateAuthentication extends CordovaPlugin {
             }
         }
     }
-
 
     private void proceedWithRequest(ICordovaClientCertRequest request) {
         request.proceed(mPrivateKey, mCertificates);
