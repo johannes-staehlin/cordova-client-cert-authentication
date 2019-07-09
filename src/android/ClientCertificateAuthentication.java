@@ -39,14 +39,14 @@ public class ClientCertificateAuthentication extends CordovaPlugin {
     @Override
     public boolean onReceivedClientCertRequest(CordovaWebView view, ICordovaClientCertRequest request) {
         if (mCertificates == null || mPrivateKey == null) {
-            loadKeys(request);
+            choosePrivateKey(request);
         } else {
-            proceedRequers(request);
+            proceedWithRequest(request);
         }
         return true;
     }
 
-    private void loadKeys(ICordovaClientCertRequest request) {
+    private void choosePrivateKey(ICordovaClientCertRequest request) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(cordova.getActivity());
         final KeyChainAliasCallback callback = new PrivateKeyAliasCallback(cordova.getActivity(), request);
         final String alias = sp.getString(SP_KEY_ALIAS, null);
@@ -105,7 +105,7 @@ public class ClientCertificateAuthentication extends CordovaPlugin {
     }
 
 
-    public void proceedRequers(ICordovaClientCertRequest request) {
+    private void proceedWithRequest(ICordovaClientCertRequest request) {
         request.proceed(mPrivateKey, mCertificates);
     }
 }
