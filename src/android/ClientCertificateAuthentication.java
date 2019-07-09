@@ -24,8 +24,8 @@ import java.util.concurrent.ExecutorService;
 public class ClientCertificateAuthentication extends CordovaPlugin {
 
     private static final String CRYPTO_RSA = "RSA";
-    public static final String SP_KEY_ALIAS = "SP_KEY_ALIAS";
-    public static final String TAG = "client-cert-auth";
+    private static final String SP_KEY_ALIAS = "SP_KEY_ALIAS";
+    private static final String TAG = "client-cert-auth";
 
     X509Certificate[] mCertificates;
     PrivateKey mPrivateKey;
