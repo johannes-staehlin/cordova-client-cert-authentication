@@ -10,6 +10,7 @@ import android.security.KeyChainAliasCallback;
 import android.security.KeyChainException;
 import android.util.Log;
 import android.widget.Toast;
+
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.ICordovaClientCertRequest;
@@ -18,43 +19,40 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.concurrent.ExecutorService;
 
-
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class ClientCertificateAuthentication extends CordovaPlugin {
 
-
-    public static final String SP_KEY_ALIAS = "SP_KEY_ALIAS";
-    public static final String TAG = "client-cert-auth";
+    private static final String CRYPTO_RSA = "RSA";
+    private static final String SP_KEY_ALIAS = "SP_KEY_ALIAS";
+    private static final String TAG = "client-cert-auth";
 
     X509Certificate[] mCertificates;
     PrivateKey mPrivateKey;
     String mAlias;
-
 
     @Override
     public Boolean shouldAllowBridgeAccess(String url) {
         return super.shouldAllowBridgeAccess(url);
     }
 
-
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     public boolean onReceivedClientCertRequest(CordovaWebView view, ICordovaClientCertRequest request) {
         if (mCertificates == null || mPrivateKey == null) {
-            loadKeys(request);
+            choosePrivateKey(request);
         } else {
-            proceedRequers(request);
+            proceedWithRequest(request);
         }
         return true;
     }
 
-    private void loadKeys(ICordovaClientCertRequest request) {
+    private void choosePrivateKey(ICordovaClientCertRequest request) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(cordova.getActivity());
-        final KeyChainAliasCallback callback = new AliasCallback(cordova.getActivity(), request);
+        final KeyChainAliasCallback callback = new PrivateKeyAliasCallback(cordova.getActivity(), request);
         final String alias = sp.getString(SP_KEY_ALIAS, null);
 
         if (alias == null) {
-            KeyChain.choosePrivateKeyAlias(cordova.getActivity(), callback, new String[]{"RSA"}, null, request.getHost(), request.getPort(), null);
+            KeyChain.choosePrivateKeyAlias(
+                cordova.getActivity(), callback, new String[]{CRYPTO_RSA}, null, request.getHost(), request.getPort(), null);
         } else {
             ExecutorService threadPool = cordova.getThreadPool();
             threadPool.submit(new Runnable() {
@@ -66,15 +64,13 @@ public class ClientCertificateAuthentication extends CordovaPlugin {
         }
     }
 
-
-    static class AliasCallback implements KeyChainAliasCallback {
-
+    static class PrivateKeyAliasCallback implements KeyChainAliasCallback {
 
         private final SharedPreferences mPreferences;
         private final ICordovaClientCertRequest mRequest;
         private final Context mContext;
 
-        public AliasCallback(Context context, ICordovaClientCertRequest request) {
+        public PrivateKeyAliasCallback(Context context, ICordovaClientCertRequest request) {
             mRequest = request;
             mContext = context;
             mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
@@ -105,10 +101,7 @@ public class ClientCertificateAuthentication extends CordovaPlugin {
         }
     }
 
-    ;
-
-
-    public void proceedRequers(ICordovaClientCertRequest request) {
+    private void proceedWithRequest(ICordovaClientCertRequest request) {
         request.proceed(mPrivateKey, mCertificates);
     }
 }
