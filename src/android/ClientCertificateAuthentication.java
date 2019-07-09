@@ -36,8 +36,6 @@ public class ClientCertificateAuthentication extends CordovaPlugin {
         return super.shouldAllowBridgeAccess(url);
     }
 
-
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     public boolean onReceivedClientCertRequest(CordovaWebView view, ICordovaClientCertRequest request) {
         if (mCertificates == null || mPrivateKey == null) {
