@@ -17,7 +17,7 @@ cordova build
 ```
 
 ## Why is there no support for iOS?
-That's not easy to answer - the main point is, that iOS handles client certificates in a different way than android. [This comment](https://github.com/johannes-staehlin/cordova-client-cert-authentication/issues/5#issuecomment-424494990) provides a good summary:
+That's not easy to answer - the main point is, that iOS handles client certificates in a different way than Android. [This comment](https://github.com/johannes-staehlin/cordova-client-cert-authentication/issues/5#issuecomment-424494990) provides a good summary:
 
 > On Android the user can download and install a standard certificate on the device, then use the standard selection mechanism to select the certificate needed to access a server. On iOS this is not really possible.
 > 
